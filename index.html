@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista Regali di Natale di Valerio</title>
   <style>
     * {
@@ -19,8 +19,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       overflow-x: hidden;
+      padding: 20px;
     }
 
     .card {
@@ -33,8 +33,10 @@
       width: 100%;
       text-align: center;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.4s ease;
     }
 
+    /* Nessun taglio alle immagini: altezza naturale proporzionata */
     .main-img {
       width: 100%;
       height: auto;
@@ -57,11 +59,12 @@
       margin-bottom: 28px;
     }
 
+    /* Contenitore a sovrapposizione perfetta */
     .btn-container {
       position: relative;
       display: grid;
       place-items: center;
-      min-height: 60px;
+      min-height: 70px;
       margin-top: 10px;
     }
 
@@ -73,10 +76,11 @@
       cursor: pointer;
       user-select: none;
       border: none;
+      transition: transform 0.15s ease-out, background-color 0.2s;
       white-space: nowrap;
-      width: max-content;
     }
 
+    /* Pulsante blu sotto */
     #btn-turn {
       grid-area: 1 / 1;
       background: #3b82f6;
@@ -87,20 +91,22 @@
 
     #btn-turn:hover {
       background: #2563eb;
+      transform: scale(1.02);
     }
 
+    /* Pulsante rosso sopra (identica dimensione, sopra a quello blu) */
     #btn-troll {
       grid-area: 1 / 1;
       background: #ef4444;
       color: #ffffff;
       box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
-      z-index: 9999;
-      touch-action: none;
+      z-index: 2;
     }
 
+    /* Schermata 2 */
     #screen-2 {
       display: none;
-      animation: fadeIn 0.5s ease forwards;
+      animation: fadeIn 0.6s ease forwards;
     }
 
     .dedication {
@@ -131,7 +137,7 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
@@ -145,7 +151,7 @@
     <h1>Lista Ufficiale Regali di Natale</h1>
     <p class="subtitle">Ecco l'elenco dei possibili regali papabili per Natale:</p>
 
-    <div class="btn-container">
+    <div class="btn-container" id="container">
       <button id="btn-turn" class="btn">Ora è il tuo turno ➔</button>
       <button id="btn-troll" class="btn">Apri la lista desideri segreta 🎁</button>
     </div>
@@ -163,7 +169,7 @@
       <strong>⚠️ ATTENZIONE: ORDINE ESECUTIVO</strong>
       Seth in garage è già più che sufficiente per i prossimi tre Natali messi insieme. Quindi la musica cambia: 
       <br><br>
-      Adesso tocca a te. Mi devi inviare la tua lista ufficiale con tutto quello che desideri per <strong>Natale (No, la sedia non conta)</strong> e per il tuo <strong>compleanno</strong>. 
+      Adesso tocca a te. Mi devi inviare la tua lista ufficiale con tutto quello che desideri per <strong>Natale (NO, la sedia non conta)</strong> e per il tuo <strong>compleanno</strong>. 
       <br><br>
       ⏳ <em>Hai esattamente <strong>due settimane di tempo</strong> da oggi per iniziare a inviarmi le prime idee. Il conto alla rovescia è partito!</em>
     </div>
@@ -175,36 +181,44 @@
     const screen2 = document.getElementById('screen-2');
     const turnBtn = document.getElementById('btn-turn');
 
-    let isEscaped = false;
+    let hasEscaped = false;
 
     function dodge(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
+      if (e) e.preventDefault();
 
-      if (!isEscaped) {
+      if (!hasEscaped) {
+        trollBtn.style.gridArea = 'auto';
         trollBtn.style.position = 'fixed';
-        isEscaped = true;
+        trollBtn.style.zIndex = '9999'; // Sempre in primo piano assoluto
+        hasEscaped = true;
       }
 
-      const rect = trollBtn.getBoundingClientRect();
-      const w = rect.width || 200;
-      const h = rect.height || 50;
+      const padding = 20;
+      const btnWidth = trollBtn.offsetWidth || 150;
+      const btnHeight = trollBtn.offsetHeight || 50;
 
-      const pad = 20;
-      const viewW = window.innerWidth || document.documentElement.clientWidth;
-      const viewH = window.innerHeight || document.documentElement.clientHeight;
+      // Calcola i limiti massimi sicuri garantendo che non siano mai inferiori a 0
+      const maxX = Math.max(0, window.innerWidth - btnWidth - padding);
+      const maxY = Math.max(0, window.innerHeight - btnHeight - padding);
 
-      const maxLeft = Math.max(pad, viewW - w - pad);
-      const maxTop = Math.max(pad, viewH - h - pad);
+      // Genera coordinate casuali sempre confinate nel viewport
+      const randomX = Math.floor(padding + Math.random() * (maxX - padding > 0 ? maxX - padding : 0));
+      const randomY = Math.floor(padding + Math.random() * (maxY - padding > 0 ? maxY - padding : 0));
 
-      const targetX = Math.floor(pad + Math.random() * (maxLeft - pad));
-      const targetY = Math.floor(pad + Math.random() * (maxTop - pad));
-
-      trollBtn.style.left = targetX + 'px';
-      trollBtn.style.top = targetY + 'px';
+      trollBtn.style.left = `${randomX}px`;
+      trollBtn.style.top = `${randomY}px`;
     }
 
+    // Sia mouse che touch su smartphone
     trollBtn.addEventListener('mouseenter', dodge);
-    trollBtn.addEventListener('pointerdown', dodge
+    trollBtn.addEventListener('touchstart', dodge, { passive: false });
+    trollBtn.addEventListener('click', dodge);
+
+    // Clic sul pulsante reale
+    turnBtn.addEventListener('click', () => {
+      screen1.style.display = 'none';
+      trollBtn.style.display = 'none';
+      screen2.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>

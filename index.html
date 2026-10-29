@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista Regali di Natale di Valerio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #0f172a);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.4s ease;
+    }
+
+    .main-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+
+    p.subtitle {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      margin-bottom: 30px;
+    }
+
+    /* Area pulsanti della prima schermata */
+    .btn-container {
+      position: relative;
+      min-height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 14px 26px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      border: none;
+      transition: transform 0.15s ease-out, background-color 0.2s;
+    }
+
+    /* Pulsante reale cliccabile */
+    #btn-turn {
+      background: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+      z-index: 5;
+    }
+
+    #btn-turn:hover {
+      background: #2563eb;
+      transform: scale(1.03);
+    }
+
+    /* Pulsante troll che scappa */
+    #btn-troll {
+      position: absolute;
+      background: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    /* Seconda schermata (nascosta di default) */
+    #screen-2 {
+      display: none;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .dedication {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .ultimatum-box {
+      background: rgba(15, 23, 42, 0.7);
+      border-left: 4px solid #f59e0b;
+      border-radius: 8px;
+      padding: 18px;
+      text-align: left;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .ultimatum-box strong {
+      color: #f59e0b;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCHERMATA 1: IL TROLL -->
+  <div class="card" id="screen-1">
+    <img src="orsi-natale.jpg" alt="Orsi vicino all'albero di Natale" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=800&q=80'">
+    
+    <h1>Lista Ufficiale Regali di Natale</h1>
+    <p class="subtitle">Ecco l'elenco dei possibili regali papabili per Natale:</p>
+
+    <div class="btn-container" id="container">
+      <button id="btn-turn" class="btn">Ora è il tuo turno ➔</button>
+      <button id="btn-troll" class="btn">Apri la lista desideri segreta 🎁</button>
+    </div>
+  </div>
+
+  <!-- SCHERMATA 2: LA VERITÀ -->
+  <div class="card" id="screen-2">
+    <img src="orso-tenere.jpg" alt="Orso su Ténéré con casco Roki" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80'">
+
+    <div class="dedication">
+      «Questo è il più bel regalo che potevi farmi e non voglio assolutamente niente per Natale. Ti Amo Bubu!»
+    </div>
+
+    <div class="ultimatum-box">
+      <strong>⚠️ ATTENZIONE: ORDINE ESECUTIVO</strong>
+      Seth in garage è già più che sufficiente per i prossimi tre Natali messi insieme. Quindi la musica cambia: 
+      <br><br>
+      Adesso tocca a te. Mi devi inviare la tua lista ufficiale con tutto quello che desideri per <strong>Natale</strong> e per il tuo <strong>compleanno</strong>. 
+      <br><br>
+      ⏳ <em>Hai esattamente <strong>due settimane di tempo</strong> da oggi per iniziare a inviarmi le prime idee. Il conto alla rovescia è partito!</em>
+    </div>
+  </div>
+
+  <script>
+    const trollBtn = document.getElementById('btn-troll');
+    const container = document.getElementById('container');
+    const screen1 = document.getElementById('screen-1');
+    const screen2 = document.getElementById('screen-2');
+    const turnBtn = document.getElementById('btn-turn');
+
+    // Sposta il pulsante troll a coordinate casuali all'interno della finestra
+    function dodge() {
+      const padding = 30;
+      const maxX = window.innerWidth - trollBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - trollBtn.offsetHeight - padding;
+
+      const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+      trollBtn.style.position = 'fixed';
+      trollBtn.style.left = `${randomX}px`;
+      trollBtn.style.top = `${randomY}px`;
+    }
+
+    // Posiziona il bottone troll sopra a quello legittimo all'inizio
+    function initTrollPos() {
+      trollBtn.style.position = 'absolute';
+      trollBtn.style.top = '15px';
+    }
+    initTrollPos();
+
+    // Trigger su mouseover e touch (mobile)
+    trollBtn.addEventListener('mouseenter', dodge);
+    trollBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dodge();
+    });
+
+    // Clic sul pulsante reale: transizione alla schermata finale
+    turnBtn.addEventListener('click', () => {
+      screen1.style.display = 'none';
+      trollBtn.style.display = 'none';
+      screen2.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
